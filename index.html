@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech & Bio-Climate Analysis | Global Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar: Selector Interactiv și Concluzii Duble -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>EduTech<span>Analytics</span></h2>
+                <p class="AI_powered">AI Powered</p>
+            </div>
+            <p class="section-label">Selectează țara pentru analiză:</p>
+            <nav class="nav-menu">
+                <button class="nav-btn" data-country="finlanda">🇫🇮 Finlanda</button>
+                <button class="nav-btn active" data-country="romania">🇷🇴 România</button>
+                <button class="nav-btn" data-country="tailanda">🇹🇭 Tailanda</button>
+                <button class="nav-btn" data-country="brazilia">🇧🇷 Brazilia</button>
+                <button class="nav-btn" data-country="kenya">🇰🇪 Kenya</button>
+            </nav>
+            
+            <!-- Zona de Concluzii Duble -->
+            <div class="critical-notes-wrapper">
+                <div class="critical-note edu-note">
+                    <h3>Impact Educație & Acces Internet & Detinere Dispozitive</h3>
+                    <p id="critical-text-edu">Se încarcă analiza educațională...</p>
+                </div>
+                <div class="critical-note bio-note">
+                    <h3>Impact Sănătate & Mediu</h3>
+                    <p id="critical-text-bio">Se încarcă analiza bio-climatică...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conținutul Principal -->
+        <main class="main-content" id="mainContent">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Profil de Țară: <span id="selected-country-title">România</span></h1>
+                    <p class="subtitle">Diferențe în educație, infrastructură tehnologică și impactul factorilor bio-climatici</p>
+                </div>
+                <div class="meta-container">
+                    <div class="meta-source-box">
+                        <div><strong>An Date:</strong> <span id="data-year">-</span></div>
+                        <div><strong>Sursă Edu/Tech:</strong> <span id="data-source">-</span></div>
+                    </div>
+                    <div class="meta-source-box health-source">
+                        <div><strong>Sursă Sănătate & Mediu:</strong></div>
+                        <div class="source-list">WHO Ambient Air / UNICEF Nutrition / WB Climate Portal</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Carduri KPI -->
+            <section class="kpi-grid">
+                <div class="kpi-card" style="border-left: 4px solid #38bdf8;">
+                    <div class="kpi-header">
+                        <h3>Înscriere Învățământ Secundar</h3>
+                        <span class="badge" id="badge-edu"></span>
+                    </div>
+                    <div class="value" id="kpi-edu">-%</div>
+                    <p class="indicator-desc">Tineri înscriși în liceu/școli profesionale</p>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid #4ade80;">
+                    <div class="kpi-header">
+                        <h3>Acces la Internet (2025)</h3>
+                        <span class="badge" id="badge-net"></span>
+                    </div>
+                    <div class="value" id="kpi-net">-%</div>
+                    <p class="indicator-desc">Rata de conectivitate în rândul tinerilor</p>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid #fbbf24;">
+                    <div class="kpi-header">
+                        <h3>Deținere Dispozitive</h3>
+                        <span class="badge" id="badge-dev"></span>
+                    </div>
+                    <div class="value" id="kpi-dev">-%</div>
+                    <p class="indicator-desc">Acces individual la PC, Laptop sau Tabletă</p>
+                </div>
+            </section>
+
+            <!-- Zona Graficelor -->
+            <section class="charts-grid-triple">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Distribuție Indicatori Curenți (%)</h3>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="indicatorsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header flex-header">
+                        <h3>Evoluția Istorică (2021-2025)</h3>
+                        <select id="metricSelector" class="styled-select">
+                            <option value="internet" selected>🌐 Acces Internet</option>
+                            <option value="educatie">📚 Educație Secundară</option>
+                            <option value="dispozitive">💻 Deținere Dispozitive</option>
+                        </select>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="historyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Amprenta Bio-Climatică vs Media celor 5 Țări</h3>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matricea de Corelație -->
+            <section class="comparison-matrix-container">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Matrice Multicriterială: Detalii Factori de Mediu și Biologici care afectează Dezvoltarea</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Țară</th>
+                                    <th>Stres Termic / Caniculă</th>
+                                    <th>Poluarea Aerului (PM2.5)</th>
+                                    <th>Ritm Circadian & Somn</th>
+                                    <th>Malnutriție / Obezitate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrixTableBody">
+                                <!-- Generat dinamic prin app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="data/statsData.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
